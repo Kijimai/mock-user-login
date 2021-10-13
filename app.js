@@ -4,9 +4,8 @@ const app = express()
 const ejs = require("ejs")
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
-const URI = process.env.MONGOOSE_URI
 
-mongoose.connect(`mongodb://localhost:27017/${URI}`)
+mongoose.connect(`mongodb://localhost:27017/mock-users`)
 
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error: "))
