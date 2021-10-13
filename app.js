@@ -19,13 +19,28 @@ app.set("views", path.join(__dirname, "views"))
 
 app.use(express.urlencoded({ extended: true }))
 
+const UserSchema = new Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+})
+
+const User = mongoose.model("User", UserSchema)
+
 app.get("/", (req, res) => {
   res.render("login")
 })
 
-app.post("/", (req, res) => {
-  const user = req.body.user
+app.get("/user/:id", async (req, res) => {
+  const { id } = req.params
+  const user = await User.findById(id)
+  res.render("main", { user })
+})
+
+app.post("/", async (req, res) => {
+  const user = new User(req.body.user)
   console.log(user)
+  await user.save()
+  res.redirect(`/user/${user._id}`)
 })
 
 app.listen(3000)
